@@ -36,4 +36,5 @@ button.addButton:hover {
 .todoText {
   margin-left: 10px;
   flex-grow: 1;
+  border: 1px solid grey
 }
