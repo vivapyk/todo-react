@@ -1,6 +1,6 @@
 @tailwind base;
-  @tailwind components;
-  @tailwind utilities;
+@tailwind components;
+@tailwind utilities;
 
   @layer base {
     :root {
@@ -63,15 +63,6 @@
       --border: 215 27.9% 16.9%;
       --input: 215 27.9% 16.9%;
       --ring: 216 12.2% 83.9%;
-    }
-  }
-
-  @layer base {
-    * {
-      @apply border-border;
-    }
-    body {
-      @apply bg-background text-foreground;
     }
   }
 

@@ -8,6 +8,8 @@
 import React, { useState } from "react";
 import TodoItem from "@/components/TodoItem";
 import styles from "@/styles/TodoList.module.css";
+import { Input } from "./ui/input";
+import { Button } from "./ui/button";
 
 // TodoList 컴포넌트를 정의합니다.
 const TodoList = () => {
@@ -60,16 +62,16 @@ const TodoList = () => {
     <div className={styles.container}>
       <h1>Todo List</h1>
       {/* 할 일을 입력받는 텍스트 필드입니다. */}
-      <input
+      <Input
         type="text"
         className={styles.itemInput}
         value={input}
         onChange={(e) => setInput(e.target.value)}
       />
       {/* 할 일을 추가하는 버튼입니다. */}
-      <button className={"btn-blue"} onClick={addTodo}>
+      <Button onClick={addTodo}>
         Add Todo
-      </button>
+      </Button>
       {/* 할 일 목록을 렌더링합니다. */}
       <ul>
         {todos.map((todo) => (
