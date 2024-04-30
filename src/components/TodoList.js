@@ -22,7 +22,7 @@ const TodoList = () => {
     getTodos();
   }, []);
 
-  // addTodo 함수는 입력값을 이용하여 새로운 할 일을 목록에 추가하는 함수입니다.
+  // addNewTodo 함수는 입력값을 이용하여 새로운 할 일을 목록에 추가하는 함수입니다.
   const addNewTodo = async () => {
     addTodo(input)
     setInput("");
