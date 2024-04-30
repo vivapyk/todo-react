@@ -16,7 +16,6 @@ import { useTodo } from "./hooks/useTodo";
 // TodoList 컴포넌트를 정의합니다.
 const TodoList = () => {
   const { todos, getTodos, addTodo, toggleTodo, deleteTodo } = useTodo()
-  // 상태를 관리하는 useState 훅을 사용하여 할 일 목록과 입력값을 초기화합니다.
   const [input, setInput] = useState("");
 
   useEffect(() => {
