@@ -10,6 +10,8 @@ import {
     deleteDoc,
     orderBy,
     where,
+    getDoc,
+    Timestamp
 } from "firebase/firestore";
 
 export const useTodo = () => {
@@ -20,9 +22,8 @@ export const useTodo = () => {
 
     const getTodos = async () => {
         // Firestore 쿼리를 만듭니다.
-        const q = query(todoCollection);
         // const q = query(collection(db, "todos"), where("user", "==", user.uid));
-        // const q = query(todoCollection, orderBy("datetime", "asc"));
+        const q = query(todoCollection, orderBy("createdAt", "asc"));
 
         // Firestore 에서 할 일 목록을 조회합니다.
         const results = await getDocs(q);
@@ -32,7 +33,7 @@ export const useTodo = () => {
         results.docs.forEach((doc) => {
             // console.log(doc.data());
             // id 값을 Firestore 에 저장한 값으로 지정하고, 나머지 데이터를 newTodos 배열에 담습니다.
-            newTodos.push({ id: doc.id, ...doc.data() });
+            newTodos.push({ id: doc.id, ...doc.data(), createdAt: doc.data().createdAt.toDate() });
         });
 
         setTodos(newTodos);
@@ -50,13 +51,15 @@ export const useTodo = () => {
         // }
         // ...todos => {id: 1, text: "할일1", completed: false}, {id: 2, text: "할일2", completed: false}}, ..
 
+        const createdAt = new Date()
         // Firestore 에 추가한 할 일을 저장합니다.
         const docRef = await addDoc(todoCollection, {
             text: input,
+            createdAt,
             completed: false,
         });
 
-        setTodos([...todos, { id: docRef.id, text: input, completed: false }]);
+        setTodos([...todos, { id: docRef.id, text: input, completed: false, createdAt }]);
     }
 
     const toggleTodo = (id) => {
@@ -94,11 +97,24 @@ export const useTodo = () => {
         );
     };
 
+    const hideCompletedTodo = () => {
+
+        if (todos.find((a) => a.completed)) {
+            const incompleteTodos = todos.filter((a) => !a.completed)
+            setTodos(incompleteTodos)
+        } else {
+            getTodos()
+        }
+
+
+    }
+
     return {
         todos,
         getTodos,
         addTodo,
         toggleTodo,
-        deleteTodo
+        deleteTodo,
+        hideCompletedTodo,
     }
 }

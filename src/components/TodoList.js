@@ -15,7 +15,7 @@ import { useTodo } from "./hooks/useTodo";
 
 // TodoList 컴포넌트를 정의합니다.
 const TodoList = () => {
-  const { todos, getTodos, addTodo, toggleTodo, deleteTodo } = useTodo()
+  const { todos, getTodos, addTodo, toggleTodo, deleteTodo, hideCompletedTodo } = useTodo()
   const [input, setInput] = useState("");
 
   useEffect(() => {
@@ -40,9 +40,16 @@ const TodoList = () => {
         onChange={(e) => setInput(e.target.value)}
       />
       {/* 할 일을 추가하는 버튼입니다. */}
-      <Button onClick={addNewTodo}>
-        Add Todo
-      </Button>
+      <div className={styles.buttonContainer}>
+        <Button onClick={addNewTodo}>
+          Add Todo
+        </Button>
+
+        <Button onClick={hideCompletedTodo}>
+          {todos.find((a) => a.completed) ? 'Hide Finished Todos' : 'View all todos'}
+        </Button>
+      </div>
+
       {/* 할 일 목록을 렌더링합니다. */}
       <ul>
         {todos.map((todo) => (
