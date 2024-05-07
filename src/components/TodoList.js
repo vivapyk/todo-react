@@ -16,9 +16,6 @@ import { useSession } from "next-auth/react";
 
 // TodoList 컴포넌트를 정의합니다.
 const TodoList = () => {
-  const { todos, getTodos, addTodo, toggleTodo, deleteTodo, hideCompletedTodo } = useTodo()
-  const [input, setInput] = useState("");
-
   const router = useRouter();
   const { data } = useSession({
     required: true,
@@ -27,9 +24,15 @@ const TodoList = () => {
     },
   });
 
+  const [input, setInput] = useState("");
+  const { todos, getTodos, addTodo, toggleTodo, deleteTodo, hideCompletedTodo } = useTodo(data)
+
+
   useEffect(() => {
-    getTodos();
-  }, []);
+    if (data) {
+      getTodos();
+    }
+  }, [data]);
 
   // addNewTodo 함수는 입력값을 이용하여 새로운 할 일을 목록에 추가하는 함수입니다.
   const addNewTodo = async () => {

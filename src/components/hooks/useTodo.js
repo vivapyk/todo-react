@@ -14,16 +14,17 @@ import {
     Timestamp
 } from "firebase/firestore";
 
-export const useTodo = () => {
+export const useTodo = (data) => {
 
     // DB의 todos 컬렉션 참조를 만듭니다. 컬렉션 사용시 잘못된 컬렉션 이름 사용을 방지합니다.
     const todoCollection = collection(db, "todos");
     const [todos, setTodos] = useState([]);
 
     const getTodos = async () => {
+        if (!data) return;
         // Firestore 쿼리를 만듭니다.
         // const q = query(collection(db, "todos"), where("user", "==", user.uid));
-        const q = query(todoCollection, orderBy("createdAt", "asc"));
+        const q = query(todoCollection, where("name", "==", data.user.name), orderBy("createdAt", "asc"));
 
         // Firestore 에서 할 일 목록을 조회합니다.
         const results = await getDocs(q);
@@ -43,6 +44,9 @@ export const useTodo = () => {
     const addTodo = async (input) => {
         // 입력값이 비어있는 경우 함수를 종료합니다.
         if (input.trim() === "") return;
+
+        // 유저 name이 없는 경우 함수를 종료합니다. 
+        if (!data?.user?.name) return;
         // 기존 할 일 목록에 새로운 할 일을 추가하고, 입력값을 초기화합니다.
         // {
         //   id: 할일의 고유 id,
@@ -54,6 +58,7 @@ export const useTodo = () => {
         const createdAt = new Date()
         // Firestore 에 추가한 할 일을 저장합니다.
         const docRef = await addDoc(todoCollection, {
+            name: data.user.name,
             text: input,
             createdAt,
             completed: false,
@@ -65,7 +70,7 @@ export const useTodo = () => {
     const toggleTodo = (id) => {
         // 할 일 목록에서 해당 id를 가진 할 일의 완료 상태를 반전시킵니다.
         const updatedTodo = todos.map((todo) => {
-            if (todo.id === id) {
+            if (todo.id === id && todo.name === data.user.name) {
                 // Firestore 에서 해당 id를 가진 할 일을 찾아 완료 상태를 업데이트합니다.
                 const todoDoc = doc(todoCollection, id);
                 updateDoc(todoDoc, { completed: !todo.completed });
@@ -87,7 +92,10 @@ export const useTodo = () => {
     // deleteTodo 함수는 할 일을 목록에서 삭제하는 함수입니다.
     const deleteTodo = (id) => {
         const todoDoc = doc(todoCollection, id);
-        deleteDoc(todoDoc);
+        const todoToDelete = todos.find((todo) => todo.id === id)
+        if (todoToDelete.name === data.user.name) {
+            deleteDoc(todoDoc);
+        }
         // 해당 id를 가진 할 일을 제외한 나머지 목록을 새로운 상태로 저장합니다.
         // setTodos(todos.filter((todo) => todo.id !== id));
         setTodos(
