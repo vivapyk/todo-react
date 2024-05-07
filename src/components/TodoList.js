@@ -46,7 +46,7 @@ const TodoList = () => {
         </Button>
 
         <Button onClick={hideCompletedTodo}>
-          {todos.find((a) => a.completed) ? 'Hide Finished Todos' : 'View all todos'}
+          {todos.find((a) => a.completed) ? 'Hide Finished todos' : 'View all todos'}
         </Button>
       </div>
 
