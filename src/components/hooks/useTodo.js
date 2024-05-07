@@ -98,15 +98,12 @@ export const useTodo = () => {
     };
 
     const hideCompletedTodo = () => {
-
         if (todos.find((a) => a.completed)) {
             const incompleteTodos = todos.filter((a) => !a.completed)
             setTodos(incompleteTodos)
         } else {
             getTodos()
         }
-
-
     }
 
     return {

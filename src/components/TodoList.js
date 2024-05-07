@@ -11,12 +11,21 @@ import styles from "@/styles/TodoList.module.css";
 import { Input } from "./ui/input";
 import { Button } from "./ui/button";
 import { useTodo } from "./hooks/useTodo";
-
+import { useRouter } from "next/navigation";
+import { useSession } from "next-auth/react";
 
 // TodoList 컴포넌트를 정의합니다.
 const TodoList = () => {
   const { todos, getTodos, addTodo, toggleTodo, deleteTodo, hideCompletedTodo } = useTodo()
   const [input, setInput] = useState("");
+
+  const router = useRouter();
+  const { data } = useSession({
+    required: true,
+    onUnauthenticated() {
+      router.replace("/login");
+    },
+  });
 
   useEffect(() => {
     getTodos();
