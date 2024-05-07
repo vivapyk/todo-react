@@ -81,12 +81,7 @@ export const useTodo = (data) => {
             }
         })
 
-        setTodos(updatedTodo
-            // todos.map((todo) =>
-            //   todo.id === id ? { ...todo, completed: !todo.completed } : todo
-            // )
-            // ...todo => id: 1, text: "할일1", completed: false
-        );
+        setTodos(updatedTodo);
     };
 
     // deleteTodo 함수는 할 일을 목록에서 삭제하는 함수입니다.
